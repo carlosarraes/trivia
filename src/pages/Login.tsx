@@ -1,11 +1,16 @@
-import { useState } from 'react'
+import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import UserContext from '../context/UserContext'
+import { UserContextType } from '../context/UserProvider'
+import { fetchToken } from '../utils/fetchServices'
 
 const Login = () => {
   const [userInfo, setUserInfo] = useState({
     email: '',
     name: '',
   })
+
+  const { setUser } = useContext(UserContext) as UserContextType
 
   const navigate = useNavigate()
 
@@ -14,8 +19,11 @@ const Login = () => {
     setUserInfo({ ...userInfo, [name]: value })
   }
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault()
+    const { token } = await fetchToken()
+    const { email, name } = userInfo
+    setUser({ token, email, name, score: 0 })
     navigate('/game')
   }
 
@@ -58,7 +66,7 @@ const Login = () => {
             Entrar
           </button>
           <button type="button" className="btn btn-info" onClick={handleClick}>
-            Configuracoes
+            Configurações
           </button>
         </section>
       </form>
