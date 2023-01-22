@@ -2,7 +2,10 @@
 
 Migrando o trivia para components funcionais e ContextAPI, no lugar de redux.
 
-## Tecnologias
+## Link para o App
+
+### Tecnologias
   - Typescript
   - Tailwind
   - DaisyUI
+  - CircularProgressbar
