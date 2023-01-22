@@ -6,6 +6,7 @@ export type UserContextType = {
     token: string
     name: string
     email: string
+    gravatar: string
     score: number
   }
   setUser: React.Dispatch<React.SetStateAction<{}>>
@@ -16,6 +17,7 @@ function UserProvider({ children }: { children: React.ReactNode }) {
     token: '',
     name: '',
     email: '',
+    gravatar: '',
     score: 0,
   })
 
