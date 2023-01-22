@@ -2,7 +2,7 @@ import { useContext, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import UserContext from '../context/UserContext'
 import { UserContextType } from '../context/UserProvider'
-import { fetchToken } from '../utils/fetchServices'
+import { fetchGravatar, fetchToken } from '../utils/fetchServices'
 
 const Login = () => {
   const [userInfo, setUserInfo] = useState({
@@ -23,7 +23,8 @@ const Login = () => {
     e.preventDefault()
     const { token } = await fetchToken()
     const { email, name } = userInfo
-    setUser({ token, email, name, score: 0 })
+    const gravatar = await fetchGravatar(email)
+    setUser({ token, email, name, gravatar, score: 0 })
     navigate('/game')
   }
 
