@@ -8,9 +8,9 @@ export const fetchToken = async () => {
 
 export const fetchQuestions = async (
   token: string,
-  category?: string,
-  difficulty?: string,
-  type?: string,
+  category: string,
+  difficulty: string,
+  type: string,
 ) => {
   let url = 'https://opentdb.com/api.php?amount=5'
   if (category) url += `&category=${category}`
@@ -26,4 +26,10 @@ export const fetchGravatar = async (email: string) => {
   const hash = Md5.hashStr(email)
   const response = await fetch(`https://www.gravatar.com/avatar/${hash}`)
   return response.url
+}
+
+export const fetchCategories = async () => {
+  const response = await fetch('https://opentdb.com/api_category.php')
+  const data = await response.json()
+  return data
 }
