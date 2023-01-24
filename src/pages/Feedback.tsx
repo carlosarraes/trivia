@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
 import Header from '../components/Header'
 import UserContext from '../context/UserContext'
+import { UserContextType } from '../context/UserProvider'
 
 const Feedback = () => {
   const [ranking, setRanking] = useState([
@@ -13,7 +14,7 @@ const Feedback = () => {
     },
   ])
   const navigate = useNavigate()
-  const { user } = useContext(UserContext)
+  const { user, setUser } = useContext(UserContext) as UserContextType
   const { name, gravatar, score, token } = user
 
   useEffect(() => {
@@ -44,6 +45,17 @@ const Feedback = () => {
     } else {
       return 'text-white '
     }
+  }
+
+  const resetGamePlayAgain = () => {
+    setUser({
+      name: '',
+      gravatar: '',
+      score: 0,
+      token: '',
+    })
+    navigate('/')
+    return
   }
 
   return (
@@ -77,7 +89,10 @@ const Feedback = () => {
           </tbody>
         </table>
         <section className="flex justify-center items-center mt-8">
-          <button className="btn btn-info opacity-80 duration-100 hover:opacity-100 w-1/2">
+          <button
+            className="btn btn-info opacity-80 duration-100 hover:opacity-100 w-1/2"
+            onClick={resetGamePlayAgain}
+          >
             Jogar novamente
           </button>
         </section>
