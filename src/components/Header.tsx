@@ -7,7 +7,7 @@ const Header = () => {
   const { name, gravatar } = user
 
   return (
-    <header className="flex justify-between text-center w-full">
+    <header className="flex justify-around text-center w-8/10">
       <h1 className="text-3xl self-center text-cyan-400">Trivia</h1>
       <section className="flex flex-col self-center">
         <img
