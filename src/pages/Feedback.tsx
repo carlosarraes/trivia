@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom'
+import Header from '../components/Header'
 import UserContext from '../context/UserContext'
 
 const Feedback = () => {
@@ -11,8 +12,6 @@ const Feedback = () => {
       token: '',
     },
   ])
-  const [savedRanking, setSavedRanking] = useState(false)
-
   const navigate = useNavigate()
   const { user } = useContext(UserContext)
   const { name, gravatar, score, token } = user
@@ -29,29 +28,33 @@ const Feedback = () => {
       newRanking.sort((a, b) => b.score - a.score)
       localStorage.ranking = JSON.stringify(newRanking)
       setRanking(newRanking)
-    } else if (!localStorage.ranking && !savedRanking) {
+    } else if (!localStorage.ranking) {
       localStorage.ranking = JSON.stringify([{ name, score, gravatar }])
       setRanking([{ name, score, gravatar, token }])
-      setSavedRanking(true)
     }
   }, [])
 
+  const handleBg = (index: number) => {
+    if (index === 0) {
+      return 'text-yellow-500 '
+    } else if (index === 1) {
+      return 'text-gray-500 '
+    } else if (index === 2) {
+      return 'text-orange-500 '
+    } else {
+      return 'text-white '
+    }
+  }
+
   return (
-    <section className="w-10/12">
-      <section className="flex justify-between items-center">
-        <h2 className="text-cyan-500 text-4xl font-bold">Trivia</h2>
-        <div className="flex justify-end items-center">
-          <div>
-            <p>{name}</p>
-          </div>
-          <img src={gravatar} alt={name} />
-        </div>
+    <section className="w-8/12 space-y-2">
+      <Header />
+      <section className="my-4 text-center">
+        <p>
+          Sua pontuação foi: <span className="font-bold text-cyan-500">{score}</span>
+        </p>
       </section>
-      <section className="text-center">
-        <h3 className="text-2xl">Feedback</h3>
-        <p>Sua pontuação foi: {score}</p>
-      </section>
-      <section className="flex justify-center">
+      <section className="flex flex-col overflow-x-auto justify-center">
         <table className="table mx-auto w-1/2">
           <thead>
             <tr>
@@ -63,7 +66,7 @@ const Feedback = () => {
           <tbody>
             {ranking.map(({ score, name, gravatar }, index) => (
               <tr key={index}>
-                <td className="font-bold text-2xl">{index + 1}</td>
+                <td className={`${handleBg(index)}font-bold text-2xl`}>{index + 1}</td>
                 <td className="flex justify-center items-center gap-8">
                   <img src={gravatar} alt={name} />
                   <div className="text-md opacity-50">{name}</div>
@@ -73,6 +76,11 @@ const Feedback = () => {
             ))}
           </tbody>
         </table>
+        <section className="flex justify-center items-center mt-8">
+          <button className="btn btn-info opacity-80 duration-100 hover:opacity-100 w-1/2">
+            Jogar novamente
+          </button>
+        </section>
       </section>
     </section>
   )
