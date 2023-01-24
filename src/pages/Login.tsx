@@ -63,10 +63,18 @@ const Login = () => {
           className="input input-bordered input-info w-full max-w-xs"
         />
         <section className="flex justify-between">
-          <button type="submit" className="btn btn-success" disabled={!validateButton()}>
+          <button
+            type="submit"
+            className="btn btn-success opacity-80 duration-100 hover:opacity-100"
+            disabled={!validateButton()}
+          >
             Entrar
           </button>
-          <button type="button" className="btn btn-info" onClick={handleClick}>
+          <button
+            type="button"
+            className="btn btn-info opacity-80 duration-100 hover:opacity-100"
+            onClick={handleClick}
+          >
             Configurações
           </button>
         </section>
