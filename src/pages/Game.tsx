@@ -23,8 +23,7 @@ interface QuestionInterface {
 }
 
 const MAXTIMER = 30
-const MAXQUESTIONS = 5
-const POINTS = 10
+const MAXQUESTIONS = 4
 const DIFFICULTY: DifficultyInterface = {
   hard: 3,
   medium: 2,
@@ -109,7 +108,7 @@ const Game = () => {
     const { textContent } = e.currentTarget
     const { correct_answer: correctAnswer, difficulty } = question
     if (textContent === correctAnswer && isActive) {
-      const scoreToAdd = POINTS + time * DIFFICULTY[difficulty as keyof DifficultyInterface]
+      const scoreToAdd = time * DIFFICULTY[difficulty as keyof DifficultyInterface]
       setScore(score + scoreToAdd)
       setUser({ ...user, score: user.score + scoreToAdd })
       setBadges(badges.map((badge, index) => (index === questionIndex ? 'y' : badge)))
@@ -121,7 +120,7 @@ const Game = () => {
   }
 
   const handleNextQuestion = () => {
-    if (questionIndex === MAXQUESTIONS - 1) {
+    if (questionIndex === MAXQUESTIONS) {
       navigate('/feedback')
       return
     }
