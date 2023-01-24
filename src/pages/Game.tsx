@@ -47,7 +47,7 @@ const Game = () => {
   const [score, setScore] = useState(0)
   const [badges, setBadges] = useState(['n', 'n', 'n', 'n', 'n'])
 
-  const { user, setUser } = useContext(UserContext) as UserContextType
+  const { user, settings, setUser } = useContext(UserContext) as UserContextType
   const navigate = useNavigate()
 
   // Timer
@@ -83,7 +83,8 @@ const Game = () => {
   useEffect(() => {
     const getQuestions = async () => {
       const { token } = user
-      const { results } = await fetchQuestions(token)
+      const { category, difficulty, type } = settings
+      const { results } = await fetchQuestions(token, category, difficulty, type)
       setQuestions(results)
       setQuestion(results[questionIndex])
       startTimer()
@@ -131,6 +132,18 @@ const Game = () => {
     startTimer()
   }
 
+  const handleBg = (answer: string) => {
+    const { correct_answer: correctAnswer } = question
+    if (nextQuestion) {
+      if (answer === correctAnswer) {
+        return 'bg-green-500'
+      } else if (answer !== correctAnswer) {
+        return 'bg-red-500'
+      }
+    }
+    return 'bg-cyan-500'
+  }
+
   const { question: questionText } = question
 
   return (
@@ -138,42 +151,46 @@ const Game = () => {
       <Header />
       <Badges badgeState={badges} index={questionIndex} />
       <section className="flex w-full gap-2">
-        <section className="mt-4 w-1/4 flex flex-col justify-center items-center">
-          <CircularProgressbar
-            value={time}
-            maxValue={MAXTIMER}
-            text={time.toString()}
-            className="self-center"
-          />
-        </section>
         <section className="flex flex-col w-full">
-          <h2 className="text-xl font-bold text-center">{decodeHtml(questionText)}</h2>
-          <section className="flex flex-col items-center justify-center mx-auto gap-2 mt-4 w-1/2">
-            {answers.map((answer) => (
-              <button
-                className="bg-cyan-500 text-white p-2 rounded-md w-full"
-                key={answer}
-                onClick={handleClick}
-              >
-                {decodeHtml(answer)}
-              </button>
-            ))}
-          </section>
           <p className="text-center text-lg p-2">
             Pontuação: <span className="text-cyan-500 font-bold">{score}</span>{' '}
           </p>
+          <h2 className="text-xl font-bold text-center">{decodeHtml(questionText)}</h2>
+          <section className="flex w-8/12 mx-auto gap-4">
+            <section className="mt-4 w-1/2 flex flex-col justify-center items-center">
+              <CircularProgressbar
+                value={time}
+                maxValue={MAXTIMER}
+                text={time.toString()}
+                className="self-center"
+              />
+            </section>
+            <section className="flex flex-col items-center justify-center mx-auto gap-2 mt-4 w-full">
+              {answers.map((answer) => (
+                <button
+                  className={`bg-cyan-500 ${
+                    nextQuestion && handleBg(answer)
+                  } text-white p-2 rounded-md w-full opacity-90 duration-100 hover:opacity-100 disabled:opacity-50 disabled:cursor-not-allowed`}
+                  key={answer}
+                  onClick={handleClick}
+                  disabled={nextQuestion}
+                >
+                  {decodeHtml(answer)}
+                </button>
+              ))}
+            </section>
+          </section>
         </section>
       </section>
-      {nextQuestion && (
-        <div className="w-full my-2  flex justify-center items-center">
-          <button
-            className="bg-cyan-500 text-white p-2 rounded-md w-1/2"
-            onClick={handleNextQuestion}
-          >
-            Próxima pergunta
-          </button>
-        </div>
-      )}
+      <div className="w-full mt-8  flex justify-center items-center">
+        <button
+          className="bg-cyan-500 text-white p-2 rounded-md w-1/2 opacity-90 hover:opacity-100 duration-100 disabled:opacity-50 disabled:bg-gray-500 disabled:text-gray-200 disabled:cursor-not-allowed"
+          disabled={!nextQuestion}
+          onClick={handleNextQuestion}
+        >
+          Próxima pergunta
+        </button>
+      </div>
     </main>
   )
 }
