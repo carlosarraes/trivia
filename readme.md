@@ -16,9 +16,9 @@ Bem-vindo ao Jogo de Trivia! Este é um jogo de trivia simples que usa uma API p
 4. Pontos serão atribuídos com base na dificuldade e tempo que você levou para adivinhar.
 5. Repita até responder todas as perguntas ou decidir sair.
 
-## Como executar
+## Como acessar o jogo
 
-Este jogo pode ser executado abrindo o arquivo `index.html` em um navegador da web. Nenhuma configuração adicional é necessária.
+O jogo pode ser testado via esse [link](https://triviaty.netlify.app/).
 
 ## Tecnologias Utilizadas
 
